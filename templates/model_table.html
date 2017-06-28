@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+  <ul class="nav side-menu">
+    <li class = "active">
+      <a href="{{ url_for('.view_model', id=modelgrid.id, path='table') }}"><i class="fa fa-table"></i> Tables </a>
+    </li>
+    <li>
+      <a href="{{ url_for('.view_model', id=modelgrid.id, path='partial_dependency') }}"><i class="fa fa-bar-chart"></i> Partial Dependency </a>
+    </li>
+    <li>
+      <a href="{{ url_for('.view_model', id=modelgrid.id, path='tsne') }}"><i class="fa fa fa-braille"></i> t-SNE </a>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>{{ modelgrid.name }} <small>Summary of model build {{ modelgrid.id }}</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+          <p>{{ complete.shape[0] }} / {{ modelgrid.get_grid().shape[0] }} iterations complete</p>
+          <p>Objective: {{ "minimize" if modelgrid.minimize else "maximize" }}</p>
+          <p>Chooser: {{ modelgrid.chooser }}</p>
+
+          <!-- start project list -->
+          <table class="table table-striped table-hover projects">
+            <thead>
+              <tr>
+                <th>#loop_id</th>
+                <th>value</th>
+                <th>duration</th>
+                {% for column in columns %}
+                  <th>{{ column }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for index, row in complete.iterrows() %}
+                <tr>
+                  <td>{{ row['_loop_id'] }}</td>
+                  <td>{{ row['_loop_value'] }}</td>
+                  <td>{{ row['_loop_duration'] | round(2) }} seconds</td>
+                  {% for column in columns %}
+                    <td>{{ row[column] }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <!-- end project list -->
+
+          {% if pending.shape[0] %}
+              <p>{{ pending.shape[0] }} pending iterations</p>
+
+              <!-- start project list -->
+              <table class="table table-striped table-hover projects">
+                <thead>
+                  <tr>
+                    <th>#loop_id</th>
+                    {% for column in columns %}
+                      <th>{{ column }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for index, row in pending.iterrows() %}
+                    <tr>
+                      <td>{{ row['_loop_id'] }}</td>
+                      {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                      {% endfor %}
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- end project list -->
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

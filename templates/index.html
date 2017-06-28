@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Experiments</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+          <p>Showing 10 latest experiments</p>
+
+          <!-- start project list -->
+          <table class="table table-striped projects">
+            <thead>
+              <tr>
+                <th style="width: 20%">uuid</th>
+                <th style="width: 20%">Name</th>
+                <th>Progress</th>
+                <th>Best Result</th>
+                <th>Results</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for modelgrid in modelgrids %}
+                {% set grid = modelgrid.get_grid() %}
+                {% set numrows = grid.shape[0] %}
+                {% set submissions = modelgrid.submissions %}
+                {% set numcomplete = submissions|length %}
+                {% set values = submissions|map(attribute='value') %}
+                {% set best_value = modelgrid.best_value() if modelgrid.best_value() else "No model runs complete yet" %}
+                <tr>
+                  <td><a href="{{ url_for('.view_model', id=modelgrid.id, path='table') }}">{{ modelgrid.id }}</a></td>
+                  <td>
+                    <a href="{{ url_for('.view_model', id=modelgrid.id, path='table') }}" data-toggle="tooltip" data-placement="top" title="{{ modelgrid.name }}">{{ modelgrid.name|truncate(20, true) }}</a>
+                    <br />
+                    <small>Last updated {{ modelgrid.updated_at.strftime("%b %d %Y %H:%M:%S") }}</small>
+                  </td>
+                  <td class="project_progress">
+                    <div class="progress progress_sm">
+                      <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{ (numcomplete/2)|round }}"></div>
+                    </div>
+                    <small>{{numcomplete}} / {{numrows}} complete</small>
+                  </td>
+                  <td>
+                    {{ best_value }}
+                    <i class="success fa fa-long-arrow-{{'down' if modelgrid.minimize else 'up'}}"></i>
+                  </td>
+                  <td>
+                    <span id="sparkline-{{modelgrid.id}}" style="height: 160px;">
+                      <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                    </span>
+                  </td>
+                </tr>
+                <script>
+                  $.get('/last_values/{{modelgrid.id}}').then(function(datum) {
+                    $("#sparkline-{{modelgrid.id}}").sparkline(datum.values, {
+                      type: 'bar',
+                      height: '30',
+                      barSpacing: 2,
+                      barWidth: 5,
+                      barColor: '#26B99A',
+                      negBarColor: '#26B99A'
+                    });
+                  });
+                </script>
+              {% endfor %}
+            </tbody>
+          </table>
+          <!-- end project list -->
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

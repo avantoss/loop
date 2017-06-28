@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Loop</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/nprogress.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- scripts -->
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/vendor/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/jquery.sparkline.min.js') }}"></script>
+  </head>
+  <body class = "nav-sm">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col menu_fixed">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="{{ url_for('index') }}" ><img src="{{ url_for('static', filename='img/avant-logo-dark.png') }}" title="<3 Avant" height = "70px" style = "margin: auto !important;"/><span> Loop</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                {% block sidebar %}{% endblock %}
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+        <style>
+          .jqstooltip{
+            box-sizing: content-box;
+            width: 80px !important;
+            opacity: 0.8;
+            filter: alpha(opacity=80);
+          }
+        </style>
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Loop <small>your friendly neighborhood hyperparameter optimizer</small></h3>
+              </div>
+
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                  <div class="input-group">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Have a model id?.."
+                           id="model-id-textfield"
+                           onkeydown = "if (event.keyCode == 13) document.getElementById('goto-button').click()">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" id="goto-button" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <!-- page content -->
+            {% block content %}{% endblock %}
+            <!-- /page content -->
+          </div>
+        </div>
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Loop - Bayesian hyperparameter optimization service by <a href="https://avant.com">Avant</a>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+    <script>
+      document.getElementById("goto-button").addEventListener("click", function() {
+        var text = document.getElementById("model-id-textfield").value;
+        window.location = '/model/' + text;
+      });
+    </script>
+    <!-- Bootstrap -->
+    <script src="{{ url_for('static', filename='js/vendor/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/bootstrap-progressbar.min.js') }}"></script>
+    <!-- lodash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
+    <!-- FastClick -->
+    <script src="{{ url_for('static', filename='js/vendor/fastclick.js') }}"></script>
+    <!-- NProgress -->
+    <script src="{{ url_for('static', filename='js/vendor/nprogress.js') }}"></script>
+    <!-- ECharts -->
+    <script src="{{ url_for('static', filename='js/vendor/echarts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/echarts-datatool.min.js') }}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  </body>
+</html>
