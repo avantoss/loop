@@ -1,0 +1,49 @@
+{
+  "name": "Loop",
+  "description": "Hyperparameter optimization service.",
+  "keywords": [
+    "bayesian optimization",
+    "data science",
+    "machine learning",
+    "sklearn",
+    "deep learning"
+  ],
+  "repository": "https://github.com/avantcredit/loop",
+  "logo": "https://github.com/avantcredit/loop/raw/master/static/img/avant-logo-heroku.jpg",
+  "scripts": {
+    "postdeploy": "python manage.py db upgrade"
+  },
+  "env": {
+    "SECRET_KEY": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    },
+    "APP_SETTINGS": {
+      "description": "Config version",
+      "value": "config.ProductionConfig"
+    },
+    "LOOP_MCMC_ITERS": {
+      "description": "Number of MCMC runs for estimating fantasies",
+      "value": "10"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "Standard-1X"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "9.5"
+      }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

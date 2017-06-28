@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Loop</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor/nprogress.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.min.css') }}">
+
+    <!-- scripts -->
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='js/vendor/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/vendor/jquery.sparkline.min.js') }}"></script>
+  </head>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <!-- page content -->
+        <div class="col-md-12">
+          <div class="col-middle">
+            <div class="text-center text-center">
+              <h1 class="error-number">500</h1>
+              <h2>Internal Server Error</h2>
+              <p>We track these errors automatically, but if the problem persists feel free to <a href="https://github.com/kirillseva/loop/issues">contact us</a>. <a href="/">Return home</a>
+              </p>
+              <div class="mid_center">
+                <h3>Know your model's uuid?</h3>
+                <form>
+                  <div class="col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                      <input type="text"
+                             class="form-control"
+                             placeholder="I'm feeling lucky!"
+                             id="model-id-textfield"
+                             onkeydown = "if (event.keyCode == 13) document.getElementById('goto-button').click()">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" id="goto-button" type="button">Go!</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /page content -->
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("goto-button").addEventListener("click", function() {
+        var text = document.getElementById("model-id-textfield").value;
+        window.location = '/model/' + text;
+      });
+    </script>
+    <!-- FastClick -->
+    <script src="{{ url_for('static', filename='js/vendor/fastclick.js') }}"></script>
+    <!-- NProgress -->
+    <script src="{{ url_for('static', filename='js/vendor/nprogress.js') }}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+  </body>
+</html>
